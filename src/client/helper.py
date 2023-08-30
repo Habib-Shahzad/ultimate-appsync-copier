@@ -38,4 +38,28 @@ class QueryHelper:
     }}
   }}
   '''
+
+    def model_to_list_query_with_filter(modelName, filter_by: str, filter_val: str,  attributes: List):
+        formatted_attributes = '\n'.join(attributes)
+        list_query = f'''
+query MyQuery {{
+  list{modelName}s(filter: {{{filter_by}: {{eq: "{filter_val}"}}}}) {{
+    items {{
+      {formatted_attributes}
+    }}
+  }}
+}}
+
+  '''
+
         return list_query
+
+    def model_to_get_query(modelName, id, attributes: List):
+        formatted_attributes = '\n'.join(attributes)
+        return f'''
+  query Get{modelName} {{
+    get{modelName}(id: "{id}") {{
+      {formatted_attributes}
+    }}
+  }}
+  '''

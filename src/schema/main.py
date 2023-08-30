@@ -7,8 +7,8 @@ class Schema:
         with open(file_name, 'r') as file:
             self.schema_content = file.read()
 
-    def get_child_models(self, model):
-        target_type = f': {model["__typename"]}'
+    def get_child_models(self, model_name):
+        target_type = f': {model_name}'
         pattern = r'\b' + re.escape(target_type) + r'\b'
         matches = re.finditer(pattern, self.schema_content)
         referencing_models = []
@@ -26,7 +26,7 @@ class Schema:
             match = re.search(pattern, self.schema_content)
             if match:
                 attribute = re.search(
-                    r'(\w+)\s*:\s*' + model["__typename"], match.group(2))
+                    r'(\w+)\s*:\s*' + model_name, match.group(2))
                 if attribute:
                     attribute_references[referencing_model] = attribute.group(
                         1)
@@ -37,6 +37,10 @@ class Schema:
         pattern = rf'{model_name}\s*{{([\s\S]*?)}}'
         match = re.search(pattern, self.schema_content)
         if match:
-            attributes = re.findall(r'(\w+)\s*:\s*[^!]', match.group(1))
+            attributes = re.findall(
+                r'(\w+)\s*:\s*(ID|String|Int|Float)', match.group(1))
+
+            attributes = [x[0] for x in attributes]
             return attributes
+
         return []

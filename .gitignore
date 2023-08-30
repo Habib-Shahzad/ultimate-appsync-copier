@@ -1,3 +1,7 @@
 __pycache__
 *.sh
 .DS_Store
+.env
+
+schema.graphql
+database.json

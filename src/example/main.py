@@ -3,6 +3,9 @@ from .data import database, new_database
 
 
 def run_mutation(model_name, params):
+
+    print("hello", model_name)
+
     old_id = params.get('id')
     if 'new' in old_id:
         print('Something weird happened')
@@ -15,8 +18,12 @@ def run_mutation(model_name, params):
     }
 
     plurar = singular_to_plural(model_name)
+    table = f"list{plurar}"
 
-    new_database[f'list{plurar}'].append(created)
+    if new_database.get(table) is None:
+        new_database[table] = []
+
+    new_database[table].append(created)
     return created
 
 
