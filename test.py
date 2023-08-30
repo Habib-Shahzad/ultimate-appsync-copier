@@ -1,1 +1,0 @@
-from src.appsync_copier import AppSyncCopier
